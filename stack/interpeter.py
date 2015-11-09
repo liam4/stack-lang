@@ -5,8 +5,11 @@ import os
 import stack_parser
 from constants import *
 
+# The standard library's path.
 STDLIB_PATH = os.path.abspath(os.path.dirname(__file__) + "/../lib/")
-# print("Standard Library @", STDLIB_PATH)
+
+# The number of tokens to print in the error traceback.
+ERROR_TOKEN_PRINT_COUNT = 8
 
 
 class Token:
@@ -816,7 +819,7 @@ def _stream_interpet(token_stream, location='here'):
                             tok = Token("py-obj", item)
                             scopes[-1]["user-words"]["word_" + index] = tok
     except SystemExit:
-        print("\n\n".join(ran_tokens))
+        print("\n\n".join(ran_tokens[-ERROR_TOKEN_PRINT_COUNT:]))
         # TODO: Fix this at some point!
         # markers = scopes[-1]["var_oop_markers"].VAL
         # for marker in markers:
