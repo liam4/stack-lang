@@ -5,6 +5,9 @@ import os
 import stack_parser
 from constants import *
 
+STDLIB_PATH = os.path.abspath(os.path.dirname(__file__) + "/../lib/")
+# print("Standard Library @", STDLIB_PATH)
+
 
 class Token:
     def __init__(self, TYPE, VAL):
@@ -770,15 +773,22 @@ def _stream_interpet(token_stream, location='here'):
 
                     directory = os.path.dirname(scopes[0]["var___file__"].VAL)
                     file_path = directory + '/' + val1.VAL
+                    lib_path = STDLIB_PATH + '/' + val1.VAL
                     try:
                         f = open(file_path + ".stack", "r")
                         import_type = "stack"
                     except IOError:
-                        if not os.path.exists(file_path + ".py"):
-                            report_error(
-                                "IMPORT", "import",
-                                "Invalid import: %s" % val1.VAL)
-                        import_type = "python"
+                        try:
+                            f = open(lib_path + ".stack", "r")
+                            import_type = "stack"
+                        except IOError:
+                            # print("Trying to import", lib_path + ".py")
+                            if not (os.path.exists(file_path + ".py") or
+                                    os.path.exists(lib_path + ".py")):
+                                report_error(
+                                    "IMPORT", "import",
+                                    "Invalid import: %s" % val1.VAL)
+                            import_type = "python"
                     if import_type == "stack":
                         f_data = f.read()
                         f.close()
@@ -790,6 +800,12 @@ def _stream_interpet(token_stream, location='here'):
                                 result_scopes[-1]["user-words"][word])
                     elif import_type == "python":
                         import_name = val1.VAL.split("/")[-1]
+
+                        directory = file_path
+                        if not os.path.exists(file_path):
+                            directory = lib_path
+                        directory = os.path.dirname(directory)
+
                         abs_directory = os.path.abspath(
                             directory + "/" + "/".join(
                                 val1.VAL.split("/")[:-1]))
@@ -800,12 +816,12 @@ def _stream_interpet(token_stream, location='here'):
                             tok = Token("py-obj", item)
                             scopes[-1]["user-words"]["word_" + index] = tok
     except SystemExit:
-        print("DAT EXIT!!!!!", tok_index, tok_data)
         print("\n\n".join(ran_tokens))
         # TODO: Fix this at some point!
         # markers = scopes[-1]["var_oop_markers"].VAL
         # for marker in markers:
         #     print("\n--", marker)
+        print("\nExit at token", tok_index)
     return data_stack, scopes
 
 
