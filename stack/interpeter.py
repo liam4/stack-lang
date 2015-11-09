@@ -3,6 +3,7 @@ import sys
 import time
 import os
 import stack_parser
+import traceback
 from constants import *
 
 # The standard library's path.
@@ -818,13 +819,21 @@ def _stream_interpet(token_stream, location='here'):
                             item = module[index]
                             tok = Token("py-obj", item)
                             scopes[-1]["user-words"]["word_" + index] = tok
-    except SystemExit:
-        print("\n\n".join(ran_tokens[-ERROR_TOKEN_PRINT_COUNT:]))
+    except:
+        for i, ran_token in enumerate(ran_tokens[-ERROR_TOKEN_PRINT_COUNT:]):
+            if i % 2 == 1:
+                print("\033[2m", end="")
+            else:
+                print("\033[0m", end="")
+            print(ran_token)
         # TODO: Fix this at some point!
         # markers = scopes[-1]["var_oop_markers"].VAL
         # for marker in markers:
         #     print("\n--", marker)
-        print("\nExit at token", tok_index)
+        print("\n\033[0;37mExit at token", tok_index)
+        print("\033[0;37;2m")
+        traceback.print_exc()
+        print("\033[0m")
     return data_stack, scopes
 
 
