@@ -22,8 +22,9 @@ def prop(interpeter, stack, scopes, stream):
 
     val1 = _val1.VAL
 
-    scopes[-1]["var_oop_markers"].VAL.append((
-        "GET", val2, "OF", interpeter.tok_overview(_val1), ))
+    if ("var_oop_markers" in scopes[-1].keys()):
+        scopes[-1]["var_oop_markers"].VAL.append((
+            "GET", val2, "OF", interpeter.tok_overview(_val1), ))
 
     if isinstance(val1, dict):
         if not val2 in val1.keys():

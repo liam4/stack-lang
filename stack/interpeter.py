@@ -153,7 +153,7 @@ def _stream_interpet(token_stream, location='here'):
                     if val2.TYPE != 'num':
                         report_error('TYPE', '%',
                                      '%s is not a number!' % str(val2))
-                    res = Token(TYPE='num', VAL=val1.VAL%val2.VAL)
+                    res = Token(TYPE='num', VAL=val1.VAL % val2.VAL)
                     data_stack.append(res)
                 elif op == 'pow':
                     try:
@@ -363,7 +363,9 @@ def _stream_interpet(token_stream, location='here'):
                                      'There are not enough values to pop.')
                     res = Token(
                         TYPE='bool',
-                        VAL=((val1.TYPE == val2.TYPE) and (val1.VAL == val2.VAL)))
+                        VAL=((
+                            val1.TYPE == val2.TYPE) and (val1.VAL == val2.VAL)
+                        ))
                     data_stack.append(res)
                 elif op == 'lt':
                     try:
@@ -372,8 +374,10 @@ def _stream_interpet(token_stream, location='here'):
                         report_error('DATA_STACK', 'lt',
                                      'There are not enough values to pop.')
                     if val1.TYPE != val2.TYPE:
-                        report_error('TYPE', 'lt',
-                                     '%s and %s are not the same type!' % (val1.VAL,val2.VAL))
+                        report_error(
+                            'TYPE', 'lt',
+                            '%s and %s are not the same type!' % (
+                                val1.VAL, val2.VAL))
                     res = Token(
                         TYPE='bool',
                         VAL=val1.VAL < val2.VAL)
@@ -385,8 +389,10 @@ def _stream_interpet(token_stream, location='here'):
                         report_error('DATA_STACK', 'gt',
                                      'There are not enough values to pop.')
                     if val1.TYPE != val2.TYPE:
-                        report_error('TYPE', 'gt',
-                                     '%s and %s are not the same type!' % (val1.VAL,val2.VAL))
+                        report_error(
+                            'TYPE', 'gt',
+                            '%s and %s are not the same type!' % (
+                                val1.VAL, val2.VAL))
                     res = Token(
                         TYPE='bool',
                         VAL=val1.VAL > val2.VAL)
@@ -399,7 +405,9 @@ def _stream_interpet(token_stream, location='here'):
                                      'There are not enough values to pop.')
                     res = Token(
                         TYPE='bool',
-                        VAL=((val1.TYPE != val2.TYPE) or (val1.VAL != val2.VAL)))
+                        VAL=(
+                            (val1.TYPE != val2.TYPE) or (val1.VAL != val2.VAL)
+                        ))
                     data_stack.append(res)
                 #List ops
                 elif op == 'lnth':
@@ -439,7 +447,8 @@ def _stream_interpet(token_stream, location='here'):
                 elif op == 'lslice':
                     try:
                         val3, val2, val1 = (
-                            data_stack.pop(), data_stack.pop(), data_stack.pop())
+                            data_stack.pop(), data_stack.pop(),
+                            data_stack.pop())
                     except IndexError:
                         report_error('DATA_STACK', 'lslice',
                                      'There are not enough values to pop.')
@@ -468,7 +477,8 @@ def _stream_interpet(token_stream, location='here'):
                 elif op == 'linsert':
                     try:
                         val3, val2, val1 = (
-                            data_stack.pop(), data_stack.pop(), data_stack.pop())
+                            data_stack.pop(), data_stack.pop(),
+                            data_stack.pop())
                     except IndexError:
                         report_error('DATA_STACK', 'linsert',
                                      'There are not enough values to pop.')
@@ -514,7 +524,10 @@ def _stream_interpet(token_stream, location='here'):
                     if val1.TYPE != 'list':
                         report_error('TYPE', 'lshift',
                                      '%s is not a list!' % str(val1))
-                    x = val1.VAL[int(val2.VAL % len(val1.VAL)):] + val1.VAL[:int(val2.VAL % len(val1.VAL))]
+                    x = (
+                        val1.VAL[int(val2.VAL % len(val1.VAL)):]
+                        + val1.VAL[:int(val2.VAL % len(val1.VAL))]
+                    )
                     data_stack.append(Token(
                         TYPE='list',
                         VAL=x))
@@ -581,7 +594,8 @@ def _stream_interpet(token_stream, location='here'):
                 elif op == 'lreplace':
                     try:
                         val3, val2, val1 = (
-                            data_stack.pop(), data_stack.pop(), data_stack.pop())
+                            data_stack.pop(), data_stack.pop(),
+                            data_stack.pop())
                     except IndexError:
                         report_error('DATA_STACK', 'lreplace',
                                      'There are not enough values to pop.')
@@ -630,8 +644,9 @@ def _stream_interpet(token_stream, location='here'):
                             data_stack.append(scopes[i]['var_' + val1.VAL])
                             break
                     else:
-                        report_error('VARAIBLE_ERROR', 'get',
-                                     'The variable %s does not exist!' % val1.VAL)
+                        report_error(
+                            'VARAIBLE_ERROR', 'get',
+                            'The variable %s does not exist!' % val1.VAL)
                 elif op == 'del':
                     try:
                         val1 = data_stack.pop()
@@ -662,11 +677,13 @@ def _stream_interpet(token_stream, location='here'):
                     try:
                         val1 = data_stack.pop()
                     except IndexError:
-                        report_error('DATA_STACK', 'reverse',
-                                     'There are not enough values to pop.')
+                        report_error(
+                            'DATA_STACK', 'reverse',
+                            'There are not enough values to pop.')
                     if val1.TYPE not in ('list', 'str'):
-                        report_error('TYPE', 'reverse',
-                                     '%s is not a string or a list!' % str(val1))
+                        report_error(
+                            'TYPE', 'reverse',
+                            '%s is not a string or a list!' % str(val1))
                     res = Token(TYPE=val1.TYPE, VAL=val1.VAL[::-1])
                     data_stack.append(res)
                 #Control flow ops
@@ -688,7 +705,8 @@ def _stream_interpet(token_stream, location='here'):
                 elif op == 'ifelse':
                     try:
                         val1, val2, val3 = (
-                            data_stack.pop(), data_stack.pop(), data_stack.pop())
+                            data_stack.pop(), data_stack.pop(),
+                            data_stack.pop())
                     except IndexError:
                         report_error('DATA_STACK', 'ifelse',
                                      'There are not enough values to pop.')
@@ -757,8 +775,9 @@ def _stream_interpet(token_stream, location='here'):
                         import_type = "stack"
                     except IOError:
                         if not os.path.exists(file_path + ".py"):
-                            report_error("IMPORT", "import",
-                                                   "Invalid import: %s" % val1.VAL)
+                            report_error(
+                                "IMPORT", "import",
+                                "Invalid import: %s" % val1.VAL)
                         import_type = "python"
                     if import_type == "stack":
                         f_data = f.read()
@@ -772,7 +791,8 @@ def _stream_interpet(token_stream, location='here'):
                     elif import_type == "python":
                         import_name = val1.VAL.split("/")[-1]
                         abs_directory = os.path.abspath(
-                            directory + "/" + "/".join(val1.VAL.split("/")[:-1]))
+                            directory + "/" + "/".join(
+                                val1.VAL.split("/")[:-1]))
                         sys.path.insert(0, abs_directory)
                         module = importlib.import_module(import_name).module
                         for index in module.keys():
@@ -782,6 +802,7 @@ def _stream_interpet(token_stream, location='here'):
     except SystemExit:
         print("DAT EXIT!!!!!", tok_index, tok_data)
         print("\n\n".join(ran_tokens))
+        # TODO: Fix this at some point!
         # markers = scopes[-1]["var_oop_markers"].VAL
         # for marker in markers:
         #     print("\n--", marker)

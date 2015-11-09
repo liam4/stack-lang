@@ -1,6 +1,6 @@
 `oop_base import
 
-[] `oop_markers set
+/* [] `oop_markers set */
 
 {
     `newobj call `prototype set
