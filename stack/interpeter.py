@@ -65,7 +65,7 @@ def _stream_interpet(token_stream, location='here'):
                         Token(TYPE='op', VAL='call')
                     ]
                 else:
-                    print(scopes)
+                    # print(scopes)
                     report_error(
                         'DATA_ERROR',
                         '~intrnal',
