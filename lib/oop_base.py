@@ -74,9 +74,19 @@ def setprop(interpeter, stack, scopes, stream):
     stack.append(val1)
 
 
+def popsetprop(interpeter, stack, scopes, stream):
+    # Like setprop, but without re-appending the object to the stack.
+    # Useful for if you're using variables.
+    val3 = stack.pop()
+    val2 = stack.pop().VAL
+    val1 = stack.pop()
+    val1.VAL[val2] = val3
+
+
 module = {
     "newobj": newobj,
     "mapobj": mapobj,
     "prop": prop,
-    "setprop": setprop
+    "setprop": setprop,
+    "popsetprop": popsetprop
 }
