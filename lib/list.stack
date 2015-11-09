@@ -102,4 +102,22 @@
     range { 1 - } lmap
 } `range0 def
 
-3 range { string ', he said.' concat print } lforeach
+{
+    /*
+        Get the sum of a list.
+
+        Syntax:
+            <list> lsum
+
+        Examples:
+            6 range lsum -> 21.0
+    */
+
+    0 `sum set
+
+    {
+        sum + `sum set
+    } lforeach
+
+    sum
+} `lsum def
