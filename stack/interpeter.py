@@ -821,19 +821,24 @@ def _stream_interpet(token_stream, location='here'):
                             scopes[-1]["user-words"]["word_" + index] = tok
     except:
         for i, ran_token in enumerate(ran_tokens[-ERROR_TOKEN_PRINT_COUNT:]):
-            if i % 2 == 1:
-                print("\033[2m", end="")
-            else:
-                print("\033[0m", end="")
+            # if i % 2 == 1:
+            #     print("\033[2m", end="")
+            # else:
+            #     print("\033[0m", end="")
             print(ran_token)
+
         # TODO: Fix this at some point!
         # markers = scopes[-1]["var_oop_markers"].VAL
         # for marker in markers:
         #     print("\n--", marker)
-        print("\n\033[0;37mExit at token", tok_index)
-        print("\033[0;37;2m")
+
+        # print("\n\033[0;37mExit at token", tok_index)
+        # print("\033[0;37;2m")
+        print("\nExit at token", tok_index)
+        print("")
         traceback.print_exc()
-        print("\033[0m")
+        print("")
+        # print("\033[0m")
     return data_stack, scopes
 
 

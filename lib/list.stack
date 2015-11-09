@@ -121,3 +121,25 @@
 
     sum
 } `lsum def
+
+{
+    /*
+        Check if a list contains an item.
+
+        Syntax:
+            <list> <any> lcontains
+
+        Examples:
+            10 range 3 lcontains -> True
+            10 range 15 lcontains -> False
+    */
+
+    `item set
+    False `contains set
+
+    {
+        item = { True `contains set } if
+    } lforeach
+
+    contains
+} `lcontains def
